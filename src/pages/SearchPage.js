@@ -16,12 +16,12 @@ const SearchPage = (props) => {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-          <input type='text' placeholder='Search by title or author' onChange={props.handleSearch} />
+          <input type='text' placeholder='Search by title or author' onChange={(e) => props.handleSearch(e.target.value)} />
 
         </div>
       </div>
       <div className='search-books-results'>
-        <BookShelf title='Results' />
+        <BookShelf title='Results' books={props.searchResults} moveToShelf={props.moveToShelf} />
       </div>
     </div>
   );

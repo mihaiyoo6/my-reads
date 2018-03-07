@@ -7,16 +7,25 @@ import BookShelfsPage from './pages/BookShelfsPage';
 
 class BooksApp extends React.Component {
   state = {
-    books: []
+    books: [],
+    searchQuery: '',
+    searchResults: []
   }
   componentDidMount() {
+    console.log('compoentnd mount');
     BooksAPI.getAll().then(books => this.setState({ books }));
   }
-  handleSearch() {
-    console.log('handle search');
+  handleSearch = (query) => {
+    BooksAPI.search(query).then(searchResults => {
+      this.setState({
+        searchResults: searchResults.map(item => {
+          const bookShelf = this.state.books.find(book => book.id === item.id);
+          return Object.assign(item, { shelf: bookShelf ? bookShelf.shelf : 'none' });
+        })
+      });
+    });
   }
   moveToShelf = (book, shelf) => {
-
     BooksAPI.update(book, shelf).then(result => {
       const ids = {}
       Object.keys(result)
@@ -25,7 +34,7 @@ class BooksApp extends React.Component {
             Object.assign(ids, { [id]: key })
           )
         );
-
+      console.log('ids', ids);
       this.setState({
         books: this.state.books.map(book => Object.assign(book, { shelf: ids[book.id] }))
       });
@@ -39,7 +48,12 @@ class BooksApp extends React.Component {
             moveToShelf={this.moveToShelf} />
         )} />
         <Route path='/search' render={() => (
-          <SearchPage handleSearch={this.handleSearch} />)} />
+          <SearchPage
+            searchQuery={this.state.searchQuery}
+            books={this.state.books}
+            searchResults={this.state.searchResults}
+            moveToShelf={this.moveToShelf}
+            handleSearch={this.handleSearch} />)} />
       </div>
     )
   }
