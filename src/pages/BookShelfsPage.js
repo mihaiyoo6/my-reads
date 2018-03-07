@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import BookShelf from '../components/BookShelf/BookShelf';
+import { titles } from '../utils/constants';
 
-const BookShelfsPage = () => {
+const BookShelfsPage = ({ books = [], moveToShelf }) => {
+  const shelfs = books.map(book => book.shelf).filter((item, index, self) => self.indexOf(item) === index);
   return (
     <div className='list-books'>
       <div className='list-books-title'>
@@ -10,14 +12,11 @@ const BookShelfsPage = () => {
       </div>
       <div className='list-books-content'>
         <div>
-          <BookShelf title='Currently Reading' books={[]} />
-          <BookShelf title='Want to Read' books={[]} />
-          <BookShelf title='Read' books={[]} />
+          {shelfs.map(shelf => <BookShelf key={shelf} title={titles[shelf]} books={books.filter(book => book.shelf === shelf)} moveToShelf={moveToShelf} />)}
         </div>
       </div>
       <div className='open-search'>
         <Link to='/search'>Add a book</Link>
-        {/* <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a> */}
       </div>
     </div >
   );
