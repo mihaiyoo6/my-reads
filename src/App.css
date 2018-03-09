@@ -103,6 +103,12 @@ body, .app {
   padding: 80px 10px 20px;
 }
 
+.search-sugestion{
+  padding: 5px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 /* books grid */
 
 .books-grid {

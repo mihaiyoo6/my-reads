@@ -4,7 +4,7 @@ import BookShelf from '../components/BookShelf/BookShelf';
 import { shelfs, shelfsTitles } from '../utils/constants';
 
 const BookShelfsPage = ({ books = [], moveToShelf }) => {
-
+  console.log('books', books);
   return (
     <div className='list-books'>
       <div className='list-books-title'>
