@@ -14,7 +14,15 @@ class SearchPage extends Component {
       this.props.handleSearch(value);
     }, 300)();
   }
-  noResults = searchTerms.map(term => (<span key={term} className="search-sugestion" onClick={() => this.handleInput(term)}> [{term}]</span >))
+  noResults = () => {
+    return <div>
+      {(this.props.searchResults.length === 0 && this.state.value.length !== 0) ?
+        <h3>No Results, you can chosse from this categories</h3> : <h3>Suggestions:</h3>
+      }
+      {searchTerms.map(term => (<span key={term} className="search-sugestion" onClick={() => this.handleInput(term)}> [{term}]</span >))}
+    </div>
+
+  }
   render() {
     return (
       <div className='search-books' >
@@ -29,18 +37,15 @@ class SearchPage extends Component {
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-            <input type='text' placeholder='Search by title or author' value={this.state.value} onChange={e => this.handleInput(e.target.value)} />
+            <input type='text' placeholder='Search by title or author' value={this.state.value} onChange={e => { this.handleInput(e.target.value) }} />
 
           </div>
         </div>
         <div className='search-books-results'>
           {
-            this.props.searchResults.length === 0 ? this.noResults :
+            this.props.searchResults.length === 0 ? this.noResults() :
               <BookShelf title='Results' books={this.props.searchResults} moveToShelf={this.props.moveToShelf} />
           }
-
-
-
         </div>
       </div>
     );
